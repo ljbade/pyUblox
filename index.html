@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>pyUblox by benizl</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/benizl/pyUblox">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/benizl/pyUblox/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/benizl/pyUblox/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>pyUblox</h1>
+          <p>Differential GPS Generator for uBlox modules</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/benizl">benizl</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>pyUblox is a set of Python scripts that can do the following</p>
+
+<ul>
+<li>Send and receive (pretty much) all binary uBlox messages</li>
+<li>Solve the GPS equations from raw data (including decoding the Ephemeris, calculating sat positions, calculating basic corrections etc)</li>
+<li>Generate RTCMv2 differential GPS corrections from a static uBlox reference station (raw data-capable only)</li>
+<li>Generate RTCMv2 differential GPS corrections from an NTRIP/RTCMv3 source</li>
+<li>Send the RTCMv2 corrections directly to serial port (typically another uBlox device)</li>
+<li>Send the RTCMv2 corrections over UDP (typically to a MAVProxy DGPS module instance to be forwarded to a remote GPS)</li>
+</ul><h1>
+<a name="scripts" class="anchor" href="#scripts"><span class="octicon octicon-link"></span></a>Scripts</h1>
+
+<p>This is all accomplished using a small number of top-level scripts</p>
+
+<h2>
+<a name="dgps_testpy" class="anchor" href="#dgps_testpy"><span class="octicon octicon-link"></span></a>dgps_test.py</h2>
+
+<p>Generate DGPS corrections from a local receiver, send to local receiver.</p>
+
+<p><code>--port1</code> Reference receiver
+<code>--port2</code> Receiver to correct
+<code>--port3</code> Uncorrected control receiver (optional)
+<code>--reference</code> Location of reference receiver, LLH, comma-separated.</p>
+
+<h2>
+<a name="dgps_ntriperrspy" class="anchor" href="#dgps_ntriperrspy"><span class="octicon octicon-link"></span></a>dgps_ntriperrs.py</h2>
+
+<p>Generate DGPS corrections from an NTRIP source, send to local receiver.</p>
+
+<p><code>--ntrip-*</code> NTRIP server, mount and credential information (see -h output for details)
+<code>--port2</code> Receiver to correct
+<code>--port3</code> Uncorrected control receiver (optional)</p>
+
+<h2>
+<a name="local_to_udppy" class="anchor" href="#local_to_udppy"><span class="octicon octicon-link"></span></a>local_to_udp.py</h2>
+
+<p>Generate DGPS corrections from a local receiver, send over UDP</p>
+
+<h2>
+<a name="ntrip_to_udppy" class="anchor" href="#ntrip_to_udppy"><span class="octicon octicon-link"></span></a>ntrip_to_udp.py</h2>
+
+<p>Generate DGPS corrections from NTRIP, send over UDP</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
