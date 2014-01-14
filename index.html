@@ -1,45 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>pyUblox by benizl</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="pyUblox : Differential GPS Generator for uBlox modules" />
 
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>pyUblox</title>
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/benizl/pyUblox">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/benizl/pyUblox/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/benizl/pyUblox/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
 
-    <div class="wrapper">
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/benizl/pyUblox">View on GitHub</a>
 
-      <section>
-        <div id="title">
-          <h1>pyUblox</h1>
-          <p>Differential GPS Generator for uBlox modules</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/benizl">benizl</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
+          <h1 id="project_title">pyUblox</h1>
+          <h2 id="project_tagline">Differential GPS Generator for uBlox modules</h2>
 
-        <h1>
-<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/benizl/pyUblox/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/benizl/pyUblox/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p>pyUblox is a set of Python scripts that can do the following</p>
 
@@ -50,13 +43,15 @@
 <li>Generate RTCMv2 differential GPS corrections from an NTRIP/RTCMv3 source</li>
 <li>Send the RTCMv2 corrections directly to serial port (typically another uBlox device)</li>
 <li>Send the RTCMv2 corrections over UDP (typically to a MAVProxy DGPS module instance to be forwarded to a remote GPS)</li>
-</ul><h1>
-<a name="scripts" class="anchor" href="#scripts"><span class="octicon octicon-link"></span></a>Scripts</h1>
+</ul><h2>
+<a name="scripts" class="anchor" href="#scripts"><span class="octicon octicon-link"></span></a>Scripts</h2>
 
-<p>This is all accomplished using a small number of top-level scripts</p>
+<p>This is all accomplished using a small number of top-level scripts.</p>
 
-<h2>
-<a name="dgps_testpy" class="anchor" href="#dgps_testpy"><span class="octicon octicon-link"></span></a>dgps_test.py</h2>
+<p>All scripts that take input from a uBlox receiver can also have a binary uBlox file specified as input in order to replay data.</p>
+
+<h3>
+<a name="dgps_testpy" class="anchor" href="#dgps_testpy"><span class="octicon octicon-link"></span></a>dgps_test.py</h3>
 
 <p>Generate DGPS corrections from a local receiver, send to local receiver.</p>
 
@@ -65,8 +60,8 @@
 <code>--port3</code> Uncorrected control receiver (optional)
 <code>--reference</code> Location of reference receiver, LLH, comma-separated.</p>
 
-<h2>
-<a name="dgps_ntriperrspy" class="anchor" href="#dgps_ntriperrspy"><span class="octicon octicon-link"></span></a>dgps_ntriperrs.py</h2>
+<h3>
+<a name="dgps_ntriperrspy" class="anchor" href="#dgps_ntriperrspy"><span class="octicon octicon-link"></span></a>dgps_ntriperrs.py</h3>
 
 <p>Generate DGPS corrections from an NTRIP source, send to local receiver.</p>
 
@@ -74,19 +69,34 @@
 <code>--port2</code> Receiver to correct
 <code>--port3</code> Uncorrected control receiver (optional)</p>
 
-<h2>
-<a name="local_to_udppy" class="anchor" href="#local_to_udppy"><span class="octicon octicon-link"></span></a>local_to_udp.py</h2>
+<h3>
+<a name="local_to_udppy" class="anchor" href="#local_to_udppy"><span class="octicon octicon-link"></span></a>local_to_udp.py</h3>
 
 <p>Generate DGPS corrections from a local receiver, send over UDP</p>
 
-<h2>
-<a name="ntrip_to_udppy" class="anchor" href="#ntrip_to_udppy"><span class="octicon octicon-link"></span></a>ntrip_to_udp.py</h2>
+<h3>
+<a name="ntrip_to_udppy" class="anchor" href="#ntrip_to_udppy"><span class="octicon octicon-link"></span></a>ntrip_to_udp.py</h3>
 
 <p>Generate DGPS corrections from NTRIP, send over UDP</p>
-      </section>
 
+<h3>
+<a name="ublox_py" class="anchor" href="#ublox_py"><span class="octicon octicon-link"></span></a>ublox_*.py</h3>
+
+<p>ublox_capture.py:  Save ubx data to a file for later processing
+ublox_show.py:  Print decoded uBlox messages to the console
+ublox_plot.py:  Draw the receiver's location over time (in 2D)</p>
+      </section>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">pyUblox maintained by <a href="https://github.com/benizl">benizl</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
     
+
   </body>
 </html>
