@@ -143,6 +143,9 @@ if opts.save_pos is not None:
 
 p_err = []
 dg_err = []
+pxy_err = []
+dgxy_err = []
+
 with open(opts.errlog, mode='r') as f:
     f.readline()
 
@@ -151,12 +154,16 @@ with open(opts.errlog, mode='r') as f:
 
         p_err.append(float(n))
         dg_err.append(float(d))
+        pxy_err.append(float(nxy))
+        dgxy_err.append(float(dxy))
 
 
 # trim off the last element of each array which may contain incomplete
 # data, depending when the logging was stopped
-p_err = numpy.array(p_err[:-1])
-dg_err = numpy.array(dg_err[:-1])
+p_err = moving_average(numpy.array(p_err[:-1]), opts.window)
+dg_err = moving_average(numpy.array(dg_err[:-1]), opts.window)
+pxy_err = moving_average(numpy.array(pxy_err[:-1]), opts.window)
+dgxy_err = moving_average(numpy.array(dgxy_err[:-1]), opts.window)
 
 plt.figure()
 
@@ -216,6 +223,8 @@ for i in range(nplots):
 
     ax.plot(p_err[i * plen: min(len(rel_err), (i+1)*plen)], color='red')
     ax.plot(dg_err[i * plen: min(len(rel_err), (i+1)*plen)], color='green')
+    ax.plot(pxy_err[i * plen: min(len(rel_err), (i+1)*plen)], color='blue')
+    ax.plot(dgxy_err[i * plen: min(len(rel_err), (i+1)*plen)], color='black')
 
 b_els = []
 b_azs = []
