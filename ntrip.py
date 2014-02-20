@@ -2,7 +2,7 @@
 
 import socket
 import base64
-import sys
+import sys, time
 
 dummy, server, port, username, password, mountpoint = sys.argv
 
@@ -16,36 +16,45 @@ header =\
 "Connection: close\r\n" +\
 "Authorization: Basic {}\r\n\r\n".format(pwd)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((server,int(port)))
-s.send(header)
+logfile = time.strftime('ntrip-%y%m%d-%H%M.txt')
+log = open(logfile, 'w')
 
-resp = s.recv(1024)
+while True:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((server,int(port)))
+    s.send(header)
 
-if resp.startswith("STREAMTABLE"):
-    raise NTRIPError("Invalid or No Mountpoint")
-elif not resp.startswith("HTTP/1.1 200 OK"):
-    raise NTRIPError("Invalid Server Response")
+    resp = s.recv(1024)
 
-try:
-    while True:
-        # There are some length bytes at the head here but it actually
-        # seems more robust to simply let the higher level RTCMv3 parser
-        # frame everything itself and bin the garbage as required.
+    if resp.startswith("STREAMTABLE"):
+        raise NTRIPError("Invalid or No Mountpoint")
+    elif not resp.startswith("HTTP/1.1 200 OK"):
+        raise NTRIPError("Invalid Server Response")
 
-        #length = s.recv(4)
+    try:
+        while True:
+            # There are some length bytes at the head here but it actually
+            # seems more robust to simply let the higher level RTCMv3 parser
+            # frame everything itself and bin the garbage as required.
 
-        #try:
-        #    length = int(length.strip(), 16)
-        #except ValueError:
-        #    continue
+            #length = s.recv(4)
 
-        data = s.recv(1024)
-        print(data)
-        #print >>sys.stderr, [ord(d) for d in data]
-        sys.stdout.flush()
+            #try:
+            #    length = int(length.strip(), 16)
+            #except ValueError:
+            #    continue
 
-finally:
-    s.close()
+            data = s.recv(1024)
+            print(data)
+
+            log.write(str(time.time()))
+            log.write(":")
+            log.write(base64.b64encode(data))
+            log.write("\n")
+            sys.stdout.flush()
+            log.flush()
+
+    finally:
+        s.close()
 
 
