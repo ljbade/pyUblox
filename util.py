@@ -205,6 +205,9 @@ class PosVector:
         lon = (lon*180)/pi
         return PosLLH(lat, lon, alt)
 
+    def toTuple(self):
+        return self.X, self.Y, self.Z
+
 def ParseLLH(pos_string):
     '''parse a lat,lon,alt string and return a PosLLH'''
     a = pos_string.split(',')
