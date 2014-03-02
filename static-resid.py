@@ -61,6 +61,9 @@ adjlog = open(logfile, 'w')
 logfile = time.strftime('residlog-local-raw-%y%m%d-%H%M.txt')
 rawlog = open(logfile, 'w')
 
+logfile = time.strftime('residlog-local-cor-%y%m%d-%H%M.txt')
+corlog = open(logfile, 'w')
+
 logfile = time.strftime('residlog-local-el-%y%m%d-%H%M.txt')
 ellog = open(logfile, 'w')
 
@@ -79,19 +82,23 @@ def position_estimate(messages, satinfo):
 
     adj = {}
     raw = {}
+    cor = {}
     for sv in satinfo.prCorrected:
-        prAdjusted = satinfo.prCorrected[sv] + satinfo.receiver_clock_error * util.speedOfLight
+        cor[sv] = satinfo.geometricRange[sv] - satinfo.prCorrected[sv]
+        prAdjusted = cor[sv] + satinfo.receiver_clock_error * util.speedOfLight
         adj[sv] = satinfo.geometricRange[sv] - prAdjusted
         raw[sv] = adj[sv] + satinfo.tropospheric_correction[sv] + satinfo.ionospheric_correction[sv]
-        
+
     for sv in range(32):
         adjlog.write("%f," % adj.get(sv,0))
         rawlog.write("%f," % raw.get(sv,0))
+        corlog.write("%f," % cor.get(sv,0))
         ellog.write("%f," % satinfo.elevation.get(sv,0))
         azlog.write("%f," % satinfo.azimuth.get(sv,0))
 
     adjlog.write('\n')
     rawlog.write('\n')
+    corlog.write('\n')
     ellog.write('\n')
     azlog.write('\n')
 
