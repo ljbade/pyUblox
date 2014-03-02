@@ -31,7 +31,7 @@ while True:
         break
 
     for i in range(32):
-        if rline[i] != 0 and abs(rline[i]) < 1000.0 and eline[i] != 0:
+        if rline[i] != 0: #and abs(rline[i]) < 1000.0 and eline[i] != 0:
             xdat.append(eline[i])
             ydat.append(rline[i])
 

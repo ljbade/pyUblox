@@ -7,6 +7,8 @@ from optparse import OptionParser
 
 parser = OptionParser("resid_historgrammer.py [options] <file1> [<file2> ...]")
 parser.add_option("--bins", type=int, help="Number of histogram bins to use", default=1000)
+parser.add_option("--min", type=int, help="Minimum value to plot", default=-1000)
+parser.add_option("--max", type=int, help="Maximum value to plot", default=1000)
 
 (opts, args) = parser.parse_args()
 
@@ -23,7 +25,7 @@ for f in args:
             row = [safe_float(x) for x in l.split(',')]
 
             for i in range(32):
-                if row[i] != 0 and abs(row[i]) < 1000.0:
+                if row[i] != 0 and row[i] < opts.max and row[i] > opts.min:
                     d[i].append(row[i]) 
 
         t = []
@@ -33,7 +35,7 @@ for f in args:
         print(max(t), min(t))
 
         figure()
-        title(f)
+        #title(f)
         hist(t, bins=opts.bins)
 
 show()
