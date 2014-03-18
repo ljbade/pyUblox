@@ -19,6 +19,7 @@ parser.add_option("--ntrip-mount", default='TID10')
 parser.add_option("--udp-port", type='int', default=13320)
 parser.add_option("--udp-addr", default="127.0.0.1")
 
+parser.add_option("--reestimate-rxclk", action='store_true')
 
 (opts, args) = parser.parse_args()
 
@@ -31,7 +32,7 @@ def send_rtcm(msg):
     port.sendto(msg,(opts.udp_addr, opts.udp_port))
     print(len(msg), msg)
 
-RTCMv3_decode.run_RTCM_converter(opts.ntrip_server, opts.ntrip_port, opts.ntrip_user, opts.ntrip_password, opts.ntrip_mount, rtcm_callback=send_rtcm)
+RTCMv3_decode.run_RTCM_converter(opts.ntrip_server, opts.ntrip_port, opts.ntrip_user, opts.ntrip_password, opts.ntrip_mount, rtcm_callback=send_rtcm, force_rxclk_correction=opts.reestimate_rxclk)
 
 port = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # port.setsockopt...
