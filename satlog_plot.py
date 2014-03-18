@@ -66,7 +66,7 @@ for log in satlogs:
             if log[i][j] == 0 and log[i-1][j] != 0:
                 log[i][j] = log[i-1][j]
 
-for sat in range(30):
+for sat in [8,9]:#range(30):
     sat_dat = []
     #print('---' + str(sat) + '---')
     for log, avg, scale in zip(satlogs, avgs, scales):
@@ -87,8 +87,10 @@ for sat in range(30):
 
         #print(numpy.average(ranges), numpy.std(ranges))
     else:
-        ax = plt.subplot(5, 6, sat)
+        #ax = plt.subplot(5, 6, sat)
+        #plt.figure()
         for log in sat_dat:
-            ax.plot(log)
+            #ax.plot(log)
+            plt.plot(log)
 
 plt.show()
