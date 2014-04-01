@@ -17,7 +17,7 @@ parser.add_option("--port3", help="serial port", default=None)
 parser.add_option("--baudrate", type='int',
                   help="serial baud rate", default=115200)
 parser.add_option("--prefix", help="log file", default='')
-parser.add_option("--usePPP", type='int', default=1, help="usePPP on recv1")
+parser.add_option("--usePPP", type='int', default=0, help="usePPP on recv1")
 parser.add_option("--dynmodel1", type='int', default=ublox.DYNAMIC_MODEL_STATIONARY, help="dynamic model for recv1")
 parser.add_option("--append", action='store_true', default=False, help='append to log file')
 parser.add_option("--module-reset", action='store_true', help="cold start all the modules")
@@ -150,27 +150,29 @@ while True:
             handle_device1(msg)
             last_msg1_time = time.time()
 
-            print '1'
+            print '1: {}'.format(msg.name())
 
     if dev2 is not None:
-        if dev2.receive_message_noerror() is not None:
-            print '2'
+        msg = dev2.receive_message_noerror()
+        if msg is not None:
+            print '2: {}'.format(msg.name())
 
     if dev3 is not None:
-        if dev3.receive_message_noerror() is not None:
-            print '3'
+        msg = dev3.receive_message_noerror()
+        if msg is not None:
+            print '3: {}'.format(msg.name())
 
-    # There's got to be a better way (without threading)
-    r, w, x = select.select([ntrip_pipe], [nfile], [], 0)
-    up = False
-    while ntrip_pipe in r and nfile in w:
-        up = True
-        nfile.write(ntrip_pipe.read(1))
+    if opts.ntrip_user is not None:
+        # There's got to be a better way (without threading)
         r, w, x = select.select([ntrip_pipe], [nfile], [], 0)
+        up = False
+        while ntrip_pipe in r and nfile in w:
+            up = True
+            nfile.write(ntrip_pipe.read(1))
+            r, w, x = select.select([ntrip_pipe], [nfile], [], 0)
 
-
-    if up:
-        print 'N'
-        nfile.flush()
+        if up:
+            print 'N'
+            nfile.flush()
 
     sys.stdout.flush()
