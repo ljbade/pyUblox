@@ -102,7 +102,7 @@ def handle_rxm_raw(msg):
         if not sv in svid_seen or tnow > svid_seen[sv]+30:
             if sv in svid_ephemeris and svid_ephemeris[sv].timereceived+1800 < tnow:
                 continue
-            dev1.configure_poll(ublox.CLASS_AID, ublox.MSG_AID_EPH, struct.pack('<B', sv))
+            base.configure_poll(ublox.CLASS_AID, ublox.MSG_AID_EPH, struct.pack('<B', sv))
             svid_seen[sv] = tnow
 
 messages = {}
@@ -131,23 +131,34 @@ def handle_device1(msg):
         handle_rxm_raw(msg)
         position_estimate(messages, satinfo)
 
+counts = [{},{},{},{}]
+def _count(idx, msg):
+    global counts
+    if msg is None:
+        return msg
+    if msg not in counts[idx]:
+        counts[idx] = 1
+    else:
+        counts[idx] += 1
+    return msg
 
 while True:
     # get a message from the reference GPS
-    msg = base.receive_message_noerror()
+    msg = _count(0, base.receive_message_noerror())
     if msg is not None:
         handle_device1(msg)
-
-    msg = corr1.receive_message_noerror()
-    if msg.name() == 'NAV_DGPS':
+        
+    msg = _count(1, corr1.receive_message_noerror())
+    if msg is not None and msg.name() == 'NAV_DGPS':
         msg.unpack()
         print("Corr1 DGPS: age=%u numCh=%u pos_count=%u" % (msg.age, msg.numCh, pos_count))
 
-    msg = corr2.receive_message_noerror()
-    if msg.name() == 'NAV_DGPS':
+    msg = _count(2, corr2.receive_message_noerror())
+    if msg is not None and msg.name() == 'NAV_DGPS':
         msg.unpack()
         print("Corr2 DGPS: age=%u numCh=%u pos_count=%u" % (msg.age, msg.numCh, pos_count))
 
-    msg = uncorr1.receive_message_noerror()
+    msg = _count(3, uncorr1.receive_message_noerror())
 
+    print counts
     sys.stdout.flush()
