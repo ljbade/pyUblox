@@ -134,12 +134,13 @@ def handle_device1(msg):
 counts = [{},{},{},{}]
 def _count(idx, msg):
     global counts
-    if msg is None:
+    if msg is None or msg.name() not in ['RXM_RAW', 'NAV_SOL', 'RXM_SFRB', 'NAV_DGPS']:
         return msg
-    if msg not in counts[idx]:
-        counts[idx] = 1
+    print counts[idx]
+    if msg.name() not in counts[idx]:
+        counts[idx][msg.name()] = 1
     else:
-        counts[idx] += 1
+        counts[idx][msg.name()] += 1
     return msg
 
 while True:
@@ -151,14 +152,17 @@ while True:
     msg = _count(1, corr1.receive_message_noerror())
     if msg is not None and msg.name() == 'NAV_DGPS':
         msg.unpack()
-        print("Corr1 DGPS: age=%u numCh=%u pos_count=%u" % (msg.age, msg.numCh, pos_count))
+        print("Corr1 DGPS: age=%u numCh=%u" % (msg.age, msg.numCh))
 
     msg = _count(2, corr2.receive_message_noerror())
     if msg is not None and msg.name() == 'NAV_DGPS':
         msg.unpack()
-        print("Corr2 DGPS: age=%u numCh=%u pos_count=%u" % (msg.age, msg.numCh, pos_count))
+        print("Corr2 DGPS: age=%u numCh=%u" % (msg.age, msg.numCh))
 
     msg = _count(3, uncorr1.receive_message_noerror())
 
-    print counts
+    for i, dc in enumerate(counts):
+        print i, dc
+    print '---'
+
     sys.stdout.flush()
