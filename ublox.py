@@ -11,7 +11,7 @@ from datetime import datetime
 import time, os
 
 # protocol constants
-PREAMBLE1 = 0xb5
+PREAMBLE1 = 0xB5
 PREAMBLE2 = 0x62
 
 # message classes
@@ -20,111 +20,158 @@ CLASS_RXM = 0x02
 CLASS_INF = 0x04
 CLASS_ACK = 0x05
 CLASS_CFG = 0x06
+CLASS_UPD = 0x09
 CLASS_MON = 0x0A
 CLASS_AID = 0x0B
 CLASS_TIM = 0x0D
 CLASS_ESF = 0x10
-
-# ACK messages
-MSG_ACK_NACK = 0x00
-MSG_ACK_ACK = 0x01
+CLASS_MGA = 0x13
+CLASS_LOG = 0x21
 
 # NAV messages
-MSG_NAV_POSECEF   = 0x1
-MSG_NAV_POSLLH    = 0x2
-MSG_NAV_STATUS    = 0x3
-MSG_NAV_DOP       = 0x4
-MSG_NAV_SOL       = 0x6
-MSG_NAV_POSUTM    = 0x8
-MSG_NAV_VELNED    = 0x12
+MSG_NAV_POSECEF   = 0x01
+MSG_NAV_POSLLH    = 0x02
+MSG_NAV_STATUS    = 0x03
+MSG_NAV_DOP       = 0x04
+MSG_NAV_SOL       = 0x06
+MSG_NAV_PVT       = 0x07
+MSG_NAV_POSUTM    = 0x08
+MSG_NAV_ODO       = 0x09
+MSG_NAV_RESETODO  = 0x10
 MSG_NAV_VELECEF   = 0x11
+MSG_NAV_VELNED    = 0x12
 MSG_NAV_TIMEGPS   = 0x20
 MSG_NAV_TIMEUTC   = 0x21
 MSG_NAV_CLOCK     = 0x22
 MSG_NAV_SVINFO    = 0x30
-MSG_NAV_AOPSTATUS = 0x60
 MSG_NAV_DGPS      = 0x31
-MSG_NAV_DOP       = 0x04
-MSG_NAV_EKFSTATUS = 0x40
 MSG_NAV_SBAS      = 0x32
-MSG_NAV_SOL       = 0x06
+MSG_NAV_ORB       = 0x34
+MSG_NAV_SAT       = 0x35
+MSG_NAV_EKFSTATUS = 0x40
+MSG_NAV_AOPSTATUS = 0x60
 
 # RXM messages
 MSG_RXM_RAW    = 0x10
 MSG_RXM_SFRB   = 0x11
 MSG_RXM_SVSI   = 0x20
-MSG_RXM_EPH    = 0x31
 MSG_RXM_ALM    = 0x30
+MSG_RXM_EPH    = 0x31
+MSG_RXM_POSREQ = 0x40
 MSG_RXM_PMREQ  = 0x41
 
+# INF messages
+MSG_INF_ERROR   = 0x00
+MSG_INF_WARNING = 0x01
+MSG_INF_NOTICE  = 0x02
+MSG_INF_TEST    = 0x03
+MSG_INF_DEBUG   = 0x04
+
+# ACK messages
+MSG_ACK_NACK = 0x00
+MSG_ACK_ACK = 0x01
+
+# CFG messages
+MSG_CFG_PRT       = 0x00
+MSG_CFG_MSG       = 0x01
+MSG_CFG_INF       = 0x02
+MSG_CFG_RST       = 0x04
+MSG_CFG_DAT       = 0x06
+MSG_CFG_TP        = 0x07
+MSG_CFG_RATE      = 0x08
+MSG_CFG_CFG       = 0x09
+MSG_CFG_FXN       = 0x0E
+MSG_CFG_TM        = 0x10
+MSG_CFG_RXM       = 0x11
+MSG_CFG_EKF       = 0x12
+MSG_CFG_ANT       = 0x13
+MSG_CFG_SBAS      = 0x16
+MSG_CFG_NMEA      = 0x17
+MSG_CFG_TM2       = 0x19
+MSG_CFG_NAV2      = 0x1A
+MSG_CFG_USB       = 0x1B
+MSG_CFG_TMODE     = 0x1D
+MSG_CFG_ODO       = 0x1E
+MSG_CFG_NVS       = 0x22
+MSG_CFG_NAVX5     = 0x23
+MSG_CFG_NAV5      = 0x24
+MSG_CFG_ESFGWT    = 0x29
+MSG_CFG_TP5       = 0x31
+MSG_CFG_PM        = 0x32
+MSG_CFG_RINV      = 0x34
+MSG_CFG_ITFM      = 0x39
+MSG_CFG_PM2       = 0x3B
+MSG_CFG_TMODE2    = 0x3D
+MSG_CFG_GNSS      = 0x3E
+MSG_CFG_LOGFILTER = 0x47
+MSG_CFG_PWR       = 0x57
+MSG_CFG_LIC       = 0x80
+
+# UPD messages
+MSG_UPD_DOWNL  = 0x01
+MSG_UPD_UPLOAD = 0x02
+MSG_UPD_EXEC   = 0x03
+MSG_UPD_MEMCPY = 0x04
+MSG_UPD_SOS    = 0x14
+
+# MON messages
+MSG_MON_SCHD   = 0x01
+MSG_MON_IO     = 0x02
+MSG_MON_IPC    = 0x03
+MSG_MON_VER    = 0x04
+MSG_MON_EXCEPT = 0x05
+MSG_MON_MSGPP  = 0x06
+MSG_MON_RXBUF  = 0x07
+MSG_MON_TXBUF  = 0x08
+MSG_MON_HW     = 0x09
+MSG_MON_USB    = 0x0A
+MSG_MON_HW2    = 0x0B
+MSG_MON_RXR    = 0x21
+MSG_MON_PATCH  = 0x27
+MSG_MON_GNSS   = 0x28
+
 # AID messages
+MSG_AID_REQ    = 0x00
+MSG_AID_INI    = 0x01
+MSG_AID_HUI    = 0x02
+MSG_AID_DATA   = 0x10
 MSG_AID_ALM    = 0x30
 MSG_AID_EPH    = 0x31
 MSG_AID_ALPSRV = 0x32
 MSG_AID_AOP    = 0x33
-MSG_AID_DATA   = 0x10
 MSG_AID_ALP    = 0x50
-MSG_AID_DATA   = 0x10
-MSG_AID_HUI    = 0x02
-MSG_AID_INI    = 0x01
-MSG_AID_REQ    = 0x00
 
-# CFG messages
-MSG_CFG_PRT = 0x00
-MSG_CFG_ANT = 0x13
-MSG_CFG_DAT = 0x06
-MSG_CFG_EKF = 0x12
-MSG_CFG_ESFGWT = 0x29
-MSG_CFG_CFG = 0x09
-MSG_CFG_USB = 0x1b
-MSG_CFG_RATE = 0x08
-MSG_CFG_SET_RATE = 0x01
-MSG_CFG_NAV5 = 0x24
-MSG_CFG_FXN = 0x0E
-MSG_CFG_INF = 0x02
-MSG_CFG_ITFM = 0x39
-MSG_CFG_MSG = 0x01
-MSG_CFG_NAVX5 = 0x23
-MSG_CFG_NMEA = 0x17
-MSG_CFG_NVS = 0x22
-MSG_CFG_PM2 = 0x3B
-MSG_CFG_PM = 0x32
-MSG_CFG_RINV = 0x34
-MSG_CFG_RST = 0x04
-MSG_CFG_RXM = 0x11
-MSG_CFG_SBAS = 0x16
-MSG_CFG_TMODE2 = 0x3D
-MSG_CFG_TMODE = 0x1D
-MSG_CFG_TPS = 0x31
-MSG_CFG_TP = 0x07
+# TIM messages
+MSG_TIM_TP   = 0x01
+MSG_TIM_TM   = 0x02
+MSG_TIM_TM2  = 0x03
+MSG_TIM_SVIN = 0x04
+MSG_TIM_VRFY = 0x06
 
 # ESF messages
 MSG_ESF_MEAS   = 0x02
 MSG_ESF_STATUS = 0x10
 
-# INF messages
-MSG_INF_DEBUG  = 0x04
-MSG_INF_ERROR  = 0x00
-MSG_INF_NOTICE = 0x02
-MSG_INF_TEST   = 0x03
-MSG_INF_WARNING= 0x01
+# MGA messages
+MSG_MGA_GPS   = 0x00
+MSG_MGA_QZSS  = 0x05
+MSG_MGA_GLO   = 0x06
+MSG_MGA_ANO   = 0x20
+MSG_MGA_FLASH = 0x21
+MSG_MGA_INI   = 0x40
+MSG_MGA_ACK   = 0x60
+MSG_MGA_DBD   = 0x80
 
-# MON messages
-MSG_MON_SCHD  = 0x01
-MSG_MON_HW    = 0x09
-MSG_MON_HW2   = 0x0B
-MSG_MON_IO    = 0x02
-MSG_MON_MSGPP = 0x06
-MSG_MON_RXBUF = 0x07
-MSG_MON_RXR   = 0x21
-MSG_MON_TXBUF = 0x08
-MSG_MON_VER   = 0x04
-
-# TIM messages
-MSG_TIM_TP   = 0x01
-MSG_TIM_TM2  = 0x03
-MSG_TIM_SVIN = 0x04
-MSG_TIM_VRFY = 0x06
+# LOG messages
+MSG_LOG_ERASE            = 0x03
+MSG_LOG_STRING           = 0x04
+MSG_LOG_CREATE           = 0x07
+MSG_LOG_INFO             = 0x08
+MSG_LOG_RETRIVE          = 0x09
+MSG_LOG_RETRIEVEPOS      = 0x0B
+MSG_LOG_RETRIEVESTRING   = 0x0D
+MSG_LOG_FINDTIME         = 0x0E
+MSG_LOG_RETRIEVEPOSEXTRA = 0x0F
 
 # port IDs
 PORT_DDC    =0
@@ -829,7 +876,7 @@ class UBlox:
     def configure_message_rate(self, msg_class, msg_id, rate):
 	'''configure the message rate for a given message'''
         payload = struct.pack('<BBB', msg_class, msg_id, rate)
-        self.send_message(CLASS_CFG, MSG_CFG_SET_RATE, payload)
+        self.send_message(CLASS_CFG, MSG_CFG_MSG, payload)
 
     def configure_port(self, port=1, inMask=3, outMask=3, mode=2240, baudrate=None):
 	'''configure a IO port'''
